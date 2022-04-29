@@ -37,7 +37,6 @@ try {
 
 const reservedFields = {
   level: true,
-  'log.level': true,
   ecs: true,
   '@timestamp': true,
   err: true,
@@ -81,7 +80,9 @@ function ecsTransform (info, opts) {
 
   const ecsFields = {
     '@timestamp': new Date().toISOString(),
-    'log.level': info.level,
+    log: {
+      level: info.level,
+    },
     message: info.message,
     ecs: { version }
   }
@@ -180,6 +181,9 @@ function ecsTransform (info, opts) {
 
   info[MESSAGE] = stringify(ecsFields)
   return info
+
+
+
 }
 
 // Return true if the given arg is a "vanilla" object. Roughly the intent is
